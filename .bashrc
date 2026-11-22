@@ -307,6 +307,38 @@ save-root() {
 
 # added 22-11-2026
 # --- DOTFILES: repo bare en ~/.githome, work-tree = $HOME ---
-# Alias para gestionar los dotfiles versionados del home.
+# Alias para gestionar los ficheros versionados del home.
 # Uso: githome status | githome add .bashrc | githome commit -m "..." | githome push
 alias githome='/usr/bin/git --git-dir=$HOME/.githome/ --work-tree=$HOME'
+
+# added 22-11-2026
+alias bin='cd /usr/local/bin'
+alias lbin='ll /usr/local/bin'
+
+# added 22-11-2026
+dns() {
+    case "${1:-}" in
+    init)
+        sudo /usr/local/bin/adguard-dns.sh $1
+        ;;
+    dns_pub)
+        sudo /usr/local/bin/adguard-dns.sh $1
+        ;;
+    adguard)
+        sudo /usr/local/bin/adguard-dns.sh $1
+        ;;
+    watch)
+        sudo /usr/local/bin/adguard-dns.sh $1
+        ;;
+    *)
+        resolvectl status | grep -E 'DNS Server'
+        echo "Para cambiar, parm: {init|adguard|dns_pub|watch}"
+        echo "  init     - Vuelve a usar los DNS entregados por el router."
+        echo "  adguard  - Usa AdGuard como DNS de este equipo."
+        echo "  dns_pub  - Usa Cloudflare y Quad9 como DNS de este equipo."
+        echo "  watch    - Usa AdGuard y vuelve al router si deja de responder."
+        # exit 1
+        ;;
+    esac
+}
+
