@@ -309,6 +309,16 @@ save-root() {
 # --- DOTFILES: repo bare en ~/.githome, work-tree = $HOME ---
 # Alias para gestionar los ficheros versionados del home.
 # Uso: githome status | githome add .bashrc | githome commit -m "..." | githome push
+#
+# ----- Operatoria tras cambiar algo en un fichero (.bashrc o json de vscode) -----
+# 1. En la maquina donde haces el cambio:
+# githome add .bashrc
+# githome commit -m "lo que sea"
+# githome push
+#
+# 2. En la otra máquina:
+# githome pull
+# source ~/.bashrc (o refres)
 alias githome='/usr/bin/git --git-dir=$HOME/.githome/ --work-tree=$HOME'
 
 # added 22-11-2026
