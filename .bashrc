@@ -121,14 +121,23 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Mis aliases
-alias ll="ls -la"
-alias la="ls -a"
-alias c="clear"
+# --- ALIAS BÁSICOS Y NAVEGACIÓN ---
+alias c='clear'
 alias ..="cd .."
 alias ...="cd ../.."
+alias h='cd ~'
+alias r='cd /'
+alias ll='ls -la'   # Unificado: ls -la (el que tenías en el sobre)
+alias la='ls -A'
+alias l='ls -CF'
 alias tree="tree -C"  # Con colores
-alias h="cd ~" 
+
+# --- GIT Y PROYECTOS (del sobre) ---
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gl="git log --oneline"
 
 # Git
 alias gs="git status"
@@ -136,20 +145,6 @@ alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push"
 alias gl="git log --oneline"
-alias von="source venv/bin/activate"
-alias voff="deactivate"
-
-# Proyectos: arqia, tasks
-alias arqia="cd ~/Documentos/proyects/arqia"
-alias tasks="cd ~/Documentos/proyects/master/TaskManager"
-alias castant="cd ~/Documentos/proyects/castant/desktop"
-alias castanto="cd ~/Documentos/proyects/castant/orchestration"
-
-alias varqia="arqia && source ~/.arqia/venv/bin/activate && echo \"✅ Entorno virtual de arqIA activado\""
-alias vcastant="castant && source venv/bin/activate && echo \"✅ Entorno virtual de castant activado\""
-
-alias vtask="tasks && source .vtask/bin/activate && echo \"✅ Entorno virtual de TaskManager activado\" "
-
 function git-init() {
     git init "$@"
     if [ -f .gitattributes ]; then
@@ -163,6 +158,85 @@ function git-init() {
         cp ~/.git-templates/.gitignore . 2>/dev/null && echo "✅ .gitignore copiado" || echo "⚠️ No se encontró plantilla .gitignore"
     fi
 }
+
+# added 22-11-2026
+# --- DOTFILES: Montaje especial de GIT con repo-bare en ~/.githome y con work-tree = $HOME ---
+# Este repo-bare significa que el repo no esta colgando del dir-tree (como .git) sino aislado
+# Alias para gestionar los ficheros versionados del home.
+# Uso: githome status | githome add .bashrc | githome commit -m "..." | githome push
+#
+# ----- Operatoria tras cambiar algo en un fichero (.bashrc o json de vscode) -----
+# 1. En la maquina donde haces el cambio:
+# githome add .bashrc
+# githome commit -m "lo que sea"
+# githome push
+#
+# 2. En la otra máquina:
+# githome pull
+# source ~/.bashrc (o refres)
+alias githome='/usr/bin/git --git-dir=$HOME/.githome/ --work-tree=$HOME'
+
+
+
+# Proyectos: arqia, tasks, ... y venv (on/off)
+alias von="source venv/bin/activate"
+alias voff="deactivate"
+
+alias arqia="cd ~/Documentos/proyects/arqia"
+alias varqia="arqia && source ~/.arqia/venv/bin/activate && echo \"✅ Entorno virtual de arqIA activado\""
+
+alias tasks="cd ~/Documentos/proyects/master/TaskManager"
+alias vtask="tasks && source .vtask/bin/activate && echo \"✅ Entorno virtual de TaskManager activado\" "
+
+alias castant="cd ~/Documentos/proyects/castant/desktop"
+alias castanto="cd ~/Documentos/proyects/castant/orchestration"
+alias vcastant="castant && source venv/bin/activate && echo \"✅ Entorno virtual de castant activado\""
+
+# --- DOCKER Y NAS ---
+alias dps='docker compose ps'
+alias dup='docker compose up -d'
+alias ddown='docker compose down'
+alias dlogs='docker compose logs -f'
+alias drestart='docker compose restart'
+alias dstart='docker compose start'
+alias dstop='docker compose stop'
+
+alias imm='cd ~/immich'
+alias dimm='cd ~/immich; dps'
+alias n8n='cd ~/n8n'
+alias dn8n='cd ~/n8n; dps'
+alias hdd-nas='cd /mnt/nas_data'
+alias mounts='df -h'
+
+# --- MANTENIMIENTO Y SISTEMA ---
+alias actualizar='sudo apt update && sudo apt upgrade -y'
+alias espacio='df -h'
+alias ram='free -h'
+alias miip='hostname -I'
+alias top='htop'
+alias bin='cd /usr/local/bin'
+alias lbin='ll /usr/local/bin'
+alias sys='cd /etc/systemd/system/'
+alias lsys='ll /etc/systemd/system/'
+
+# --- CLOUDFLARE / N8N / TIMERS (del nas) ---
+alias tunel-var='echo -- Inicia el túnel-Cloudflare VARIABLE para n8n -- ; ~/cloudflared tunnel --url http://192.168.1.139:5678'
+alias tunel-ini='echo -- Start túnel-Cloudflare -- ; sudo systemctl start cloudflared'
+alias tunel-fin='echo -- Stop túnel-Cloudflare -- ; sudo systemctl stop cloudflared'
+alias alarmas='echo "=== Viven en la BIOS ===" ; sudo /usr/sbin/rtcwake -m show'
+alias apagar-nas='sudo /usr/local/bin/apagar-y-programar.sh'
+alias stop-power-off='sudo systemd-inhibit --what=shutdown --who="Trabajo de Juan" --why="Evitar que el NAS se apague" sleep infinity'
+alias check-power-off='systemd-inhibit --list'
+
+timer() {
+    echo "=== Viven en: /etc/systemd/system/ (*.service y *.timer)"
+    systemctl list-timers --no-pager | {
+        read -r cabecera
+        echo "$cabecera"
+        grep -i "$1"
+    }
+}
+
 
 function k-on() {
     sudo mkdir -p /mnt/compartidoK
@@ -199,17 +273,6 @@ function hdd-off() {
 
 export PATH="$HOME/bin:$PATH"
 
-# # ARQIA configuration
-# source ~/.arqia/config.sh
-# alias arqia-info="arqia_info"
-
-### --- Retirado el 3-10-26 porque ya no uso ARQUIA (no progresa operativamente) ---
-# export PATH="$HOME/.arqia/bin:$PATH"
-# # Al final de .bashrc, después de la línea anterior
-# if [[ ":$PATH:" != *":$HOME/.arqia/bin:"* ]]; then
-#     export PATH="$HOME/.arqia/bin:$PATH"
-# fi
-
 # Incuido el 3-10-26 tras usar el instalador oficial de OpenCode
 export PATH="$HOME/.opencode/bin:$PATH"
 
@@ -227,6 +290,7 @@ function cq() {
     copyq toggle
 }
 
+# --- Pareja de tools para editar/guardar en vscode ficheros de ROOT ---
 # add 20-11-2026
 edit-root() {
     if [ -z "$1" ]; then
@@ -306,25 +370,10 @@ save-root() {
 }
 
 # added 22-11-2026
-# --- DOTFILES: repo bare en ~/.githome, work-tree = $HOME ---
-# Alias para gestionar los ficheros versionados del home.
-# Uso: githome status | githome add .bashrc | githome commit -m "..." | githome push
-#
-# ----- Operatoria tras cambiar algo en un fichero (.bashrc o json de vscode) -----
-# 1. En la maquina donde haces el cambio:
-# githome add .bashrc
-# githome commit -m "lo que sea"
-# githome push
-#
-# 2. En la otra máquina:
-# githome pull
-# source ~/.bashrc (o refres)
-alias githome='/usr/bin/git --git-dir=$HOME/.githome/ --work-tree=$HOME'
-
-# added 22-11-2026
 alias bin='cd /usr/local/bin'
 alias lbin='ll /usr/local/bin'
 
+# --- MANEJO DEL DNS LOCAL (SOLO APLICA A LA MAQUINA DONDE SE USA. NO TOCA EL ROUTER) ---
 # added 22-11-2026
 dns() {
     case "${1:-}" in
