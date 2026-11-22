@@ -1,0 +1,17 @@
+{
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "git.enabled": true,
+    "git.decorations.enabled": true,
+    "window.customTitleBarVisibility": "windowed",
+    "security.workspace.trust.untrustedFiles": "open",
+    "js/ts.updateImportsOnFileMove.enabled": "always",
+    "extensions.ignoreRecommendations": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "terminal.integrated.initialHint": false,
+    "git.confirmSync": false,
+    "workbench.colorTheme": "Default High Contrast"
+}

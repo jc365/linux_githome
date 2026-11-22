@@ -1,0 +1,154 @@
+# ============================================================
+# .gitignore defensivo para el repo bare de dotfiles ($HOME)
+# Objetivo: si algún día haces `githome add .` por error,
+#           no se añadan cachés, descargas, historiales, etc.
+# ============================================================
+
+# --- Cachés y datos regenerables ---
+.cache/
+.local/share/
+.local/state/
+.config/Code/Cache/
+.config/Code/CachedData/
+.config/Code/CachedExtensionVSIXs/
+.config/Code/User/workspaceStorage/
+.config/Code/User/globalStorage/
+.config/google-chrome/
+.config/chromium/
+.config/mozilla/
+.config/thorium/
+.config/BraveSoftware/
+.config/CopyQ/
+.config/pulse/
+.config/dconf/
+.config/ibus/
+.config/fontconfig/
+
+# --- Historiales y estado de shell ---
+.bash_history
+.bash_logout
+.zsh_history
+.python_history
+.node_repl_history
+.lesshst
+.viminfo
+.vim/.netrwhist
+.wget-hsts
+
+# --- Sesiones y escritorios ---
+.Xauthority
+.ICEauthority
+.xsession-errors
+.xinputrc
+.lesshst
+.gnupg/
+.pki/
+.ssh/
+.gpg/
+
+# --- Basura de escritorio / papelera ---
+.local/share/Trash/
+.thumbnails/
+Trash/
+
+# --- Descargas, temporales, snapshots ---
+Descargas/
+Downloads/
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+*~
+*.log
+*.pid
+*.sock
+*.lock
+
+# --- Carpetas de proyectos con sus propios repos ---
+# (si tienes repos Git dentro de $HOME, no queremos que el repo
+#  de dotfiles los absorba; Git ya los trata como repos anidados,
+#  pero por si acaso, ignora sus .git)
+Documentos/proyects/
+proyectos/
+repos/
+workspace/
+*/node_modules/
+*/.venv/
+*/venv/
+*/.vtask/
+*/__pycache__/
+*.pyc
+
+# --- Apps que guardan secretos o bases de datos ---
+.config/gh/
+.config/glab/
+.config/gcloud/
+.config/azure/
+.aws/
+.azure/
+.kube/
+.docker/
+.npm/_logs/
+.npm/_cacache/
+.pnpm-store/
+.cargo/registry/
+.cargo/git/
+.gradle/
+.m2/
+.nvim/
+.vim/plugged/
+.vim/autoload/plug.vim
+.config/nvim/plugin/packer_compiled.lua
+
+# --- Medios y binarios grandes (por si acaso) ---
+*.iso
+*.img
+*.vdi
+*.vmdk
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.mp3
+*.flac
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+*.7z
+*.rar
+*.deb
+*.rpm
+*.AppImage
+
+# --- Entornos virtuales y dependencias ---
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+.npm/
+
+# --- Configuración de VSCode que cambia mucho ---
+.config/Code/User/History/
+.config/Code/User/Backups/
+.config/Code/logs/
+
+# --- Cloudflared (credenciales) ---
+.cloudflared/*.json
+.cloudflared/cert.pem
+
+# --- Excepciones: lo que SÍ queremos versionar ---
+# (pon aquí archivos dentro de carpetas ignoradas arriba,
+#  si algún día quieres versionar algo concreto)
+!.bashrc
+!.bash_aliases
+!.gitconfig
+!.vimrc
+!.gitignore
+!.profile
+!.inputrc
